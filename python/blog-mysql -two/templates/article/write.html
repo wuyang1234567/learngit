@@ -1,0 +1,106 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>写博客页面</title>
+    <link href="{% static 'bin/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  </head>
+<body>
+    <h1 style="text-align: center; margin-bottom: 30px" >写博客</h1>
+    <div class="container" >
+        <form action="/article/writehttp" method="post">
+            {% csrf_token %}
+             <div class="input-group" style="margin-bottom: 30px">
+             <span class="input-group-addon" id="basic-addon1">文章标题</span>
+                <input type="text" class="form-control"  placeholder="" aria-describedby="basic-addon1" name="articletitle" id="article-title"/>
+              </div>
+            <div class="input-group" style="margin-bottom: 30px">
+              <span class="input-group-addon" id="basicaddon1">文章作者</span>
+              <input type="text" class="form-control"  placeholder="" aria-describedby="basic-addon1" name="articleauthor" id="articleauthor"/>
+              </div>
+             <div class="input-group" style="margin-bottom: 30px">
+                  <span class="input-group-addon" id="basic-addon1">文章内容</span>
+                  <textarea class="form-control" rows="30" name="articlecontent" id="article-content"></textarea>
+              </div>
+            <input type="text" name="userid" id="userid" style="display:none"/>
+{#            <textarea name="content" id="content" style="width: 800px; height: 400px; margin: 0 auto;"></textarea>#}
+            <button  class="btn btn-lg btn-primary btn-block"  data-target="#myModal" type="submit" id="publish">
+                发布
+            </button>
+         </form>
+    </div>
+</body>
+ <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'bin/bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="/static/js/jquery.form.js"></script>
+  <script src="/static/js/jquery.validate.js"></script>
+  <script src="/static/cookie/getcookie.js"></script>
+{#   <script type="text/javascript" charset="utf-8" src="../../static/ueditor/utf8-jsp/ueditor.all.js"></script>#}
+{#  <script type="text/javascript" charset="utf-8" src="../../static/ueditor/utf8-jsp/ueditor.config.js"></script>#}
+{#  <script type="text/javascript" charset="utf-8" src="../../static/ueditor/utf8-jsp/lang/zh-cn/zh-cn.js"></script>#}
+</html>
+<script>
+  {#var ue = UE.getEditor('content');#}
+    init();
+    var value;
+    function init(){
+        validate();
+        value=getData("id");
+        ajax(value)
+    }
+    {#form表单#}
+     function validate(){
+        var validate=$("form").validate({
+            rules:{
+                articletitle:{
+                    required:true
+                },
+                articleauthor:{
+                    required:true
+                },
+                articlecontent:{
+                    required:true
+                }
+            },
+            messages:{
+                 articletitle:{
+                    required:"请填写文章标题哦"
+                },
+                articleauthor:{
+                    required:"请填写文章作者哦"
+                },
+                articlecontent:{
+                    required:"请填写文章内容哦"
+                }
+            },
+             submitHandler:function(form){
+                $("form").ajaxSubmit(function(message){
+                    location.href="/article/list"
+                })
+             }
+        })
+    }
+    $("#userid").val(value);
+     function ajax(id){
+
+      var data={"id":id};
+       $.ajax({
+           url:"/article/writeid",
+           type:"GET",
+           data:data,
+           dateType:"json",
+            contentType: 'json',
+           success: function getData(data){
+                var getdate=JSON.parse(data);
+                getdate=getdate.elsemsg.username;
+                $("#articleauthor").val(getdate)
+           }
+       })
+  }
+</script>

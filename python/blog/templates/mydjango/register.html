@@ -1,0 +1,75 @@
+
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Signin Template for Bootstrap</title>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+     <link rel="stylesheet" href="../../static/register/register.css">
+  </head>
+  <body>
+    <div class="container">
+      <form class="form-signin" method="post" >
+        {%csrf_token%}
+
+        <h2 class="form-signin-heading" style="text-align: center; margin: 40px">注册</h2>
+
+        <label for="inputEmail" class="sr-only">username</label>
+
+        <input  class="form-control" placeholder="username"   id="username" name="username">
+
+        <label for="inputPassword" class="sr-only">Password</label>
+
+        <input type="password" id="password" class="form-control" placeholder="Password"  name="password">
+
+        <div class="checkbox">
+
+        </div>
+
+          <!-- Button trigger modal -->
+        <button  class="btn btn-lg btn-primary btn-block"  data-target="#myModal" type="submit" id="register">
+        注册
+        </button>
+      </form>
+
+    </div> <!-- /container -->
+
+  </body>
+  <script src="{% static 'bootstrap/js/jquery.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+  <script src="../../static/mydjango/js/localstorge.js"></script>
+</html>
+<script>
+    var username;
+    var password;
+    var register;
+    var get;
+    var getdate;
+    var jsonarr;
+    var obj;
+    var arr;
+    init();
+    function init(){
+        username=document.getElementById("username");
+        password=document.getElementById("password");
+        register=document.getElementById("register");
+    }
+    {#点击注册按钮的点击事件#}
+     register.onclick=function (){
+        {#判断表单的内容是否为空#}
+        if(username.value === "" || password.value === "" ){
+            alert("请把信息填写完整");
+            return;
+        }
+        console.log("注册");
+        storge("registermsg");
+     };
+
+
+</script>

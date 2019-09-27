@@ -1,0 +1,107 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Signin Template for Bootstrap</title>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+     <link rel="stylesheet" href="../../static/register/register.css">
+  </head>
+<body>
+    <h1 style="text-align: center; margin-bottom: 30px" >写博客</h1>
+
+    <div class="container" >
+        <form action="" method="post">
+            {%csrf_token%}
+            <div class="input-group" style="margin-bottom: 30px">
+             <span class="input-group-addon" id="basic-addon1">文章标题</span>
+                <input type="text" class="form-control"  placeholder="" aria-describedby="basic-addon1" name="article-title" id="article-title"/>
+              </div>
+            <div class="input-group" style="margin-bottom: 30px">
+              <span class="input-group-addon" id="basic-addon1">文章作者</span>
+              <input type="text" class="form-control"  placeholder="" aria-describedby="basic-addon1" name="article-author" id="article-author"/>
+
+              </div>
+                <div class="input-group" style="margin-bottom: 30px">
+              <span class="input-group-addon" id="basic-addon1">文章日期</span>
+              <input type="text" class="form-control"  placeholder="" aria-describedby="basic-addon1" name="article-time" id="article-time"/>
+
+              </div>
+             <div class="input-group" style="margin-bottom: 30px">
+                  <span class="input-group-addon" id="basic-addon1">文章内容</span>
+                  <textarea class="form-control" rows="30" name="article-content" id="article-content"></textarea>
+              </div>
+
+            <button  class="btn btn-lg btn-primary btn-block"  data-target="#myModal" type="submit" id="publish">
+                发布
+            </button>
+        </form>
+
+    </div>
+
+</body>
+ <script src="{% static 'bootstrap/js/jquery.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</html>
+<script>
+    var articleTitle;
+    var articleAuthor;
+    var articleTime;
+    var articleContent;
+    var publish;
+    var obj;
+    var get;
+    var arr;
+    init();
+    function init(){
+        articleTitle=document.getElementById("article-title");
+        articleAuthor=document.getElementById("article-author");
+        articleTime=document.getElementById("article-time");
+        articleContent=document.getElementById("article-content");
+        publish=document.getElementById("publish");
+        var now = new Date();
+        var year = now.getFullYear(); //得到年份
+        var month = now.getMonth();//得到月份
+        var date = now.getDate();//得到日期
+        var hour = now.getHours();//得到小时
+        var minu = now.getMinutes();//得到分钟
+        var sec = now.getSeconds();//得到秒
+        time = year + "年" + (month+1) + "月" + date + "日" + " " + hour + ":" + minu + ":" + sec ;
+        articleTime.value=time;
+    }
+    {#点击函数#}
+    publish.onclick=function(){
+        if(articleTitle.value!==''&& articleAuthor.value!==''&& articleTime.value!==""&&articleContent.value!==''){
+            storge();
+        }else{
+            alert("请填写完整")
+        }
+
+
+    };
+    function storge(){
+    console.log("storge函数");
+     obj={
+        'title':articleTitle.value,
+        'author':articleAuthor.value,
+         "time":articleTime.value,
+         "content":articleContent.value
+        };
+     get=localStorage.getItem("content");
+     if(get===null){
+         arr=[];
+     }
+     else{
+         arr=JSON.parse(get);
+     }
+     arr.push(obj);  //对象push到数组中
+     jsonarr=JSON.stringify(arr);//将数组转换为字符串
+     localStorage.setItem("content",jsonarr);  //将字符串数组保存下来
+     get=localStorage.getItem("content");
+ }
+</script>

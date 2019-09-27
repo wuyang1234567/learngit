@@ -1,0 +1,65 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Signin Template for Bootstrap</title>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+     <link rel="stylesheet" href="../../static/register/register.css">
+  </head>
+<body>
+    <h1 style="text-align: center">我是详情页面</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>文章标题</th>
+          <th>文章作者</th>
+          <th>文章时间</th>
+          <th>文章内容</th>
+        </tr>
+      </thead>
+      <tbody id="article">
+
+      </tbody>
+    </table>
+    <button  class="btn btn-lg btn-primary btn-block"  data-target="#myModal" type="submit" id="btnreturn">
+        返回
+    </button>
+</body>
+ <script src="{% static 'bootstrap/js/jquery.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</html>
+<script>
+
+    var id;
+    var get;
+    var getdate;
+    var article;
+    var btnreturn;
+    init();
+    function init(){
+        id=location.href.split("=")[1];
+        article=document.getElementById("article");
+        get=localStorage.getItem("content");
+        getdate=JSON.parse(get);
+        btnreturn=document.getElementById("btnreturn");
+        world();
+    }
+    function world(){
+        var th='';
+            var title="<td>"+getdate[id].title+"</td>";
+            var author="<td>"+getdate[id].author+"</td>";
+            var time="<td>"+getdate[id].time+"</td>";
+            var content="<td>"+getdate[id].content+"</td>";
+            th="<tr>"+title+author+time+content+"</tr>";
+            article.innerHTML+=th;
+    }
+    btnreturn.onclick=function(){
+        location.href="http://127.0.0.1:8000/mydjango/list/"
+    }
+</script>

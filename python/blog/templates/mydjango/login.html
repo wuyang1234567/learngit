@@ -1,0 +1,77 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Signin Template for Bootstrap</title>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+     <link rel="stylesheet" href="../../static/register/register.css">
+  </head>
+  <body>
+    <div class="container">
+      <form class="form-signin" method="post">
+         {%csrf_token%}
+        <h2 class="form-signin-heading" style="text-align: center; margin: 40px">登录</h2>
+
+        <label for="inputEmail" class="sr-only">username</label>
+
+        <input  class="form-control" placeholder="username" required name="username" id="username">
+
+        <label for="inputPassword" class="sr-only">Password</label>
+
+        <input type="password" id="password" class="form-control" placeholder="Password" required name="password">
+
+        <div class="checkbox">
+
+        </div>
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" id="login"/>
+
+      </form>
+
+
+
+    </div> <!-- /container -->
+
+  </body>
+  <script src="{% static 'bootstrap/js/jquery.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+ <script src="../../static/mydjango/js/localstorge.js"></script>
+</html>
+<script>
+    var username;
+    var password;
+    var login;
+    var get;
+    var getdate;
+    var jsonarr;
+    var obj;
+    var arr;
+    init();
+    function init(){
+        {#console.log($("h2").val());#}
+        username=document.getElementById("username");
+        password=document.getElementById("password");
+        login=document.getElementById("login");
+    }
+    {#点击注册按钮的点击事件#}
+     login.onclick=function (){
+        console.log(username.value);
+        console.log(password.value);
+        {#判断表单的内容是否为空#}
+        if(username.value !== "张三" ){
+            alert("请输入正确的用户名");
+        }else{
+            if(password.value!=="123"){
+                alert("请填写正确的密码")
+            }else{
+                storge("loginmsg");
+            }
+        }
+     };
+</script>

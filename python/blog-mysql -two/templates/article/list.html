@@ -1,0 +1,99 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>文章列表</title>
+    <link href="/static/bin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        li{
+            display: inline-block;
+            border:1px solid black;
+            padding: 0 5px;
+            margin-left: 5px;
+        }
+    </style>
+  </head>
+<body>
+   <h1 style="text-align: center ; margin-bottom: 30px">文章列表</h1>
+    <table class="table" id="table">
+      <thead>
+        <tr>
+          <th>文章标题</th>
+          <th>文章作者</th>
+          <th>文章时间</th>
+        </tr>
+      </thead>
+      <tbody id="article">
+
+      </tbody>
+    </table>
+   <div id="pages" style="margin-top:50px">
+
+   </div>
+    <button  class="btn btn-lg btn-primary btn-block"  data-target="#myModal" type="submit" id="btnreturn">
+        写文章
+    </button>
+</body>
+ <script src="/static/js/jquery.js"></script>
+  <script src="/static/bin/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/cookie/getcookie.js"></script>
+</html>
+<script>
+    var article;
+    var btnreturn;
+    var count;
+    var page;
+    var value
+    init();
+    function init(){
+        page=1;
+        article=document.getElementById("article");
+        btnreturn=document.getElementById("btnreturn");
+       value=getData("id");
+       ajax(value,page)
+    }
+  {#ajax通信#}
+  function ajax(id,page){
+      var data={"id":id,"page":page};
+       $.ajax({
+           url:"/article/listhttp",
+           type:"GET",
+           data:data,
+           dateType:"json",
+            contentType: 'text/json,charset=utf-8',
+           success: function getData(data){
+                var getdate=JSON.parse(data);
+                count=getdate["elsemsg"]["count"];
+                world(getdate["elsemsg"]["content"])
+           }
+       })
+  }
+    {#拼接字符串#}
+    function world(getdate){
+        article.innerHTML="";
+        var li="";
+       for( i=1;i<=count;i++){
+           console.log(i);
+           li+="<li><a onClick=ajax("+value+","+i+")>"+i+"</a></li>"
+       }
+       var ul="<ul>"+li+"</ul>";
+       $("#pages").html(ul);
+        var th='';
+        for(var i=0;i<getdate.length;i++){
+            var author="<td>"+getdate[i].author+"</td>";
+            var title="<td>"+"<a href='/article/details?id="+getdate[i].id+"' >"+getdate[i].title+"</a>"+"</td>";
+            var time="<td>"+getdate[i].time+"</td>";
+            th="<tr>"+title+author+time+"</tr>";
+            article.innerHTML+=th;
+        }
+    }
+    btnreturn.onclick=function(){
+        location.href="/article/write"
+    }
+</script>

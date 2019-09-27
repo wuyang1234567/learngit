@@ -1,0 +1,32 @@
+{% extends "mydjango/base.html" %}
+{% block content %}
+    <ul class="nav navbar-nav navbar-right" >
+        <li style="margin: 15px 5px 0 0">用户名：</li>
+        {% if username != null %}
+            <li style="margin: 15px 5px 0 0">{{ username }}</li>
+        {% else %}
+            <li style="margin: 15px 5px 0 0" id="username"></li>
+        {% endif %}
+
+        <li style="margin-left: 10px"><a href="{%  url  'writeblog' %}"><span class="glyphicon glyphicon-pencil"></span>写博客</a></li>
+        <li style="margin-left: 10px"><a href="{%  url  'list' %}">博客列表</a></li>
+    </ul>
+{% endblock %}
+{% block login %}
+           <div style="margin: 300px 300px ">现在是登录的页面</div>
+{% endblock %}
+{% block js %}
+    <script>
+        var getusername;
+        var username;
+        var id;
+        init();
+        function init(){
+        username=document.getElementById("username");
+        getusername=localStorage.getItem("loginmsg");
+        id=JSON.parse(getusername)[0]["na"];
+        username.innerHTML=id;
+      }
+
+    </script>
+{% endblock %}

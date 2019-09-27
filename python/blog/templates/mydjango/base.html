@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Signin Template for Bootstrap</title>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  </head>
+  <body>
+      <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">博客</a>
+        </div>
+{#        导航的登录注册部分#}
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        {% block content %}
+          <ul class="nav navbar-nav navbar-right" style="margin: 5px 5px 0 0">
+            <li style="margin-right: 5px"><a href="{%  url  'register' %}"><button class="btn btn-default" >注册</button></a></li>
+            <li ><a href="{%  url  'login' %}"><button class="btn btn-default">登录</button></a></li>
+          </ul>
+        {% endblock %}
+        </div>
+      </div>
+    </nav>
+{#     导航的登录注册部分结束#}
+{#          内容部分#}
+      {% block login %}
+           <div style="margin: 300px 300px ">现在是没登录的页面</div>
+    {% endblock %}
+
+  </body>
+  <script src="{% static 'bootstrap/js/jquery.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</html>
+{% block js %}
+{% endblock %}

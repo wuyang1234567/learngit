@@ -1,0 +1,72 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Signin Template for Bootstrap</title>
+    <link href="{% static 'bin/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  </head>
+<body>
+    <h1 style="text-align: center">我是详情页面</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>文章内容</th>
+        </tr>
+      </thead>
+      <tbody id="article">
+
+      </tbody>
+    </table>
+    <button  class="btn btn-lg btn-primary btn-block"  data-target="#myModal" type="submit" id="btnreturn">
+        返回
+    </button>
+</body>
+ <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'bin/bootstrap/js/bootstrap.min.js' %}"></script>
+  <script src="/static/cookie/getcookie.js"></script>
+</html>
+<script>
+    var article;
+    var btnreturn;
+    var address;
+    var articleid;
+    init();
+    function init(){
+        address=location.search;
+        articleid=address.split("=")[1];
+        article=document.getElementById("article");
+        btnreturn=document.getElementById("btnreturn");
+        ajax(articleid)
+    }
+    {#ajax通信#}
+  function ajax(id){
+      var data={"id":id};
+       $.ajax({
+           url:"/article/articlehttp",
+           type:"GET",
+           data:data,
+           dateType:"json",
+            contentType: 'json',
+           success: function getData(data){
+                var getdate=JSON.parse(data);
+                world(getdate);
+           }
+       })
+  }
+  {#拼接字符串#}
+    function world(getdate){
+        var th='';
+            var content="<td>"+getdate.elsemsg+"</td>";
+            th="<tr>"+content+"</tr>";
+            article.innerHTML+=th;
+    }
+    btnreturn.onclick=function(){
+        location.href="/article/list"
+    }
+</script>

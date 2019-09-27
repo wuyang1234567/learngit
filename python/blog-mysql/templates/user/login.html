@@ -1,0 +1,113 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>登录页面</title>
+    <link href="{% static 'bin/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <form class="form-signin" method="post" action="/user/httplogin">
+        {%csrf_token%}
+
+        <h2 class="form-signin-heading" style="text-align: center; margin: 40px">登录</h2>
+
+        <label for="inputEmail" class="sr-only">username</label>
+
+        <input  class="form-control" placeholder="username"   id="username" name="username" style="margin-bottom:30px"/>
+
+        <label for="inputPassword" class="sr-only">Password</label>
+
+        <input type="password" id="password" class="form-control" placeholder="Password"  name="password"  style="margin-bottom:30px"/>
+
+
+
+        <div class="checkbox">
+
+        </div>
+
+          <!-- Button trigger modal -->
+        <button  class="btn btn-lg btn-primary btn-block"  data-target="#myModal" type="submit" id="register">
+        登录
+        </button>
+      </form>
+
+    </div> <!-- /container -->
+
+  </body>
+  <script src="{% static '/js/jquery.js' %}"></script>
+  <script src="{% static 'bin/bootstrap/js/bootstrap.js' %}"></script>
+  <script src="/static/js/jquery.form.js"></script>
+  <script src="/static/js/jquery.validate.js"></script>
+</html>
+<script>
+
+    var obj;
+    var localdata;
+    init();
+    function init(){
+        validate()
+    }
+    function validate(){
+        var validate=$("form").validate({
+            rules:{
+                username:{
+                    required:true,
+                    minlength:2,
+                    maxlength:10
+                },
+                password:{
+                    required:true,
+                    minlength:2,
+                    maxlength:10
+                }
+            },
+            messages:{
+                username:{
+                    required:"用户名不符合要求",
+                    minlength:"最小长度为2",
+                    maxlength:"最大长度为10"
+                },
+                password:{
+                    required:"密码填写不符合要求",
+                    email:"密码填写不符合要求"
+                }
+            },
+             submitHandler:function(form){
+                $("form").ajaxSubmit(function(message){
+                   var msg=JSON.parse(message);
+                    alert(msg.message);
+                    if(msg.code===0){
+                        {#把id值存到cookie中#}
+                        setCookie("id",msg.elsemsg,10,'/')
+                        location.href="/article/list"
+                    }
+                })
+             }
+        })
+    }
+    {#存到cookie中#}
+    function setCookie(name,value,expires,path,domain,secure){
+       var _cookie=encodeURIComponent(name)+'='+encodeURIComponent(value);
+       if (expires) {
+           var dates=new Date();
+           dates.setDate(dates.getDate()+expires);
+            _cookie+=";expires="+dates;
+       }
+       if(path){
+        _cookie+=';path='+path;
+       }
+       if (domain) {
+        _cookie+=';domain='+domain;
+       }
+       document.cookie=_cookie
+    }
+
+
+</script>
